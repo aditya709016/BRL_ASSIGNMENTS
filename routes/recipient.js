@@ -7,27 +7,24 @@ const querystring = require('querystring')
 // <---gives subscription_status--->
 router.get('/recipients', async(req,res) => {
     try{
-           const recipients = await recipients.fine(req.query.subscription_status)
+           const recipients = await recipients.findone(req.query.subscription_status)
            res.json(recipients)
     }catch(err){
         res.send('Error ' + err)
     }
 })
 // <----new recipient---->
-router.post('/recipients', async(req,res) => {
-    const recipients = new Recipients({
-        name: req.body.name,
-        email: req.body.email,
-        subscription_status: req.body.sub
-    })
-
+router.post("/recipients",async (req, res) => {
     try{
-        const a1 =  await recipients.save() 
-        res.json(a1)
-    }catch(err){
-        res.send('Error')
+        const user = new recipients(req.body);
+        const adduser=await user.save();
+        res.status(201).send(adduser);
+    }catch(e){
+        res.status(400).send(e);
     }
-})
+  });
+
+    
 // <-----delete all recipients------>
 router.delete('/recipients', async(req,res) => {
     try{
@@ -41,7 +38,7 @@ router.delete('/recipients', async(req,res) => {
 // <-------find a recipient by its email----->
 router.get('/recipients', async(req,res) => {
     try{
-           const recipients = await Recipients.findbyemail(req.query.email)
+           const recipients = await recipients.findbyemail(req.query.email)
            res.json(recipients)
     }catch(err){
         res.send('Error ' + err)
@@ -51,21 +48,27 @@ router.get('/recipients', async(req,res) => {
 
 
 
-router.patch('/recipients',async(req,res)=> {
-    try{
-        const recipients = await Recipients.findbyemail(req.query.email) 
-        recipients.email = req.body.email
-        const a1 = await recipients.save()
-        res.json(a1)   
-    }catch(err){
-        res.send('Error')
+router.patch("/recipients",async(req,res)=>{
+    try {
+        const newemail=req.params.email;
+        console.log(newemail);
+        const updateRecipients=await recipients.findOneAndUpdate({email:newemail},req.body,{
+            new:true
+        });
+        console.log(updateRecipients);
+        res.send(updateRecipients);
+        
+    } catch (e) {
+        
+        res.status(400).send(e);
     }
 
-})
+});
+
 // <------delet a perticular recipient------>
 router.delete('/recipients', async(req,res) => {
     try{
-           const recipients = await Recipients.deletOne(req.query.email)
+           const recipients = await recipients.deletOne(req.query.email)
            res.json(recipients)
     }catch(err){
         res.send('Error ' + err)
@@ -73,11 +76,12 @@ router.delete('/recipients', async(req,res) => {
 })
 
 
+
 // <-------change the subscription_status of a perticular recipient to true----> 
-router.get('/recipients',async(req,res)=> {
+router.get('/recipient',async(req,res)=> {
     try{
-        const recipients = await Recipients.findByemail(req.query.email) 
-        recipients.subscription_status = true
+        const recipients = await recipients.findByemail(req.query.email) 
+        recipients.Subscription_status = true
         const a1 = await recipients.save()
         res.json(a1)   
     }catch(err){
@@ -86,9 +90,9 @@ router.get('/recipients',async(req,res)=> {
 
 })
 // <-------change the subscription_status of a perticular recipient to false------>
-router.get('/recipients',async(req,res)=> {
+router.get('/recipient',async(req,res)=> {
     try{
-        const recipients = await Recipients.findByemail(req.query.email) 
+        const recipients = await recipients.findByemail(req.query.email) 
         recipients.unsubscription_status = false
         const a1 = await recipients.save()
         res.json(a1)   

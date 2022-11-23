@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+const validator=require("validator")
 
 
 const recipientsSchema = new mongoose.Schema({
@@ -8,14 +9,14 @@ const recipientsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    tech: {
+    email: {
         type: String,
         required: true
     },
     Subscription_status: {
-        type: Boolean,
-        required: true,
-        default: false
+        type: String,
+        enum: ["True", "False"],
+        default: "False"
     }
 
 })
