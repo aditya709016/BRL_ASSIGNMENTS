@@ -1,5 +1,5 @@
 const express = require('express')
-// const { MongoServerClosedError } = require('mongodb')
+const { MongoServerClosedError } = require('mongodb')
 const mongoose = require('mongoose')
 const recipients = require('./models/recipients')
 const url = 'mongodb://localhost/RecipientsDBex'
