@@ -4,7 +4,7 @@
   "description": "Api_routing",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "node app.js"
   },
   "author": "Aditya",
   "license": "ISC",
