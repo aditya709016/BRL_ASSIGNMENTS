@@ -2,7 +2,7 @@ const express = require('express')
 const { MongoServerClosedError } = require('mongodb')
 const mongoose = require('mongoose')
 const recipients = require('./models/recipients')
-const url = 'mongodb://localhost/RecipientsDBex'
+const url = 'mongodb+srv://AdityaRajSharma:Aditya@brl@newcluster.way4kzj.mongodb.net/test'
 
 const app = express()
 
