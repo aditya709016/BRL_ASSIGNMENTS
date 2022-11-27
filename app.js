@@ -24,6 +24,6 @@ app.get("/", (req, res) => {
 
 app.use("/", recipientsRouter)
 
-app.listen(9000, () => {
-    console.log('Server started')
-})
+app.listen(process.env.PORT || 3000, function(){
+    console.log(`Server listening at http://localhost:${port}`)
+  })
